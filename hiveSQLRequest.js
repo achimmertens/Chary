@@ -1,5 +1,6 @@
 const sql = require('mssql');
 const { password1 } = require('./config');
+const fs = require('fs');
 
 // Konfigurationsobjekt für die Verbindung zum SQL Server
 const config = {
@@ -19,26 +20,62 @@ async function executeScript() {
     // Verbindung zum SQL Server herstellen
     await sql.connect(config);
 
-    // SQL-Skript ausführen
-    const result = await sql.query(`
-      SELECT 
-        author, root_title, last_update, url, body, total_vote_weight
-      FROM 
-        Comments 
-      WHERE CONTAINS(body, '"!CHARY"')
-        AND body LIKE '%!CHARY%' COLLATE Latin1_General_CS_AS
-      ORDER BY last_update DESC;
-    `);
+    // SQL-Abfrage aus der Datei lesen
+    const query = fs.readFileSync('HiveSQLQuery.sql', 'utf8');
+
+    // SQL-Abfrage ausführen
+    const result = await sql.query(query);
 
     // Ergebnis verarbeiten
     console.log(result.recordset);
 
     // Verbindung schließen
     await sql.close();
+    return result.recordset
   } catch (error) {
     console.error(error);
   }
 }
 
-// SQL-Skript ausführen
-executeScript();
+function fillTemplate(recordset) {
+  // Vorlagendatei lesen
+  const template = fs.readFileSync('ReportTemplate.md', 'utf8');
+
+  // Platzhalter ersetzen
+  let filledTemplate = template.replace('[AUTHOR1]', recordset[0].author);
+  filledTemplate = filledTemplate.replace('[AUTHOR2]', recordset[1].author);
+  // Weitere Platzhalter ersetzen...
+
+  // Aktualisierte Vorlage zurückgeben
+  return filledTemplate;
+}
+
+
+// Hauptfunktion
+async function main() {
+  try {
+    // SQL-Skript ausführen
+    const recordset = await executeScript();
+
+    // Vorlage mit Recordset füllen
+    const filledTemplate = fillTemplate(recordset);
+
+    // Aktualisierte Vorlage in eine neue Datei schreiben
+    fs.writeFileSync('FilledReportTemplate.md', filledTemplate);
+
+    console.log('Das FilleTemplate sieht so aus: ', filledTemplate);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Hauptfunktion aufrufen
+main();
+
+
+
+
+
+
+
+
