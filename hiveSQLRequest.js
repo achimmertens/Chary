@@ -55,7 +55,12 @@ function fillTemplate(recordset) {
 async function main() {
   try {
     // SQL-Skript ausführen
-    const recordset = await executeScript();
+   // const recordset = await executeScript();
+   // fs.writeFileSync('exampleRecordSet.json', JSON.stringify(recordset));
+
+    // Alternativ: JSON-Datei einlesen
+    const data = await fs.promises.readFile('exampleRecordSet.json', 'utf8');
+    const recordset = JSON.parse(data);
 
     // Vorlage mit Recordset füllen
     const filledTemplate = fillTemplate(recordset);
