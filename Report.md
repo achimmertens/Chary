@@ -1,5 +1,5 @@
-Hive Nobel Prizes Rewards For The Last Week - 20 Hive - 3 Winners
-Hello hivers, curators, donators, and all helping people,
+Hive Nobel Prize Rewards For Week 33 - 20 Hive - 3 Winners
+Hello hivers, curators, donators, helping people, and all others,
 
 This is the
 # Hive Nobel Prizes Award For The Last Week
@@ -24,12 +24,12 @@ The money has already been sent:
 ![image.png](https://files.peakd.com/file/peakd-hive/anobel/23tbJmnEXgMRbfDj2EU4H17d6q6H6orj9zNNuJnDcdGywWgQGQLNpfePVnXugTK6CPNMe.png)
 *Screenshot of the @anobel wallet from today*
 
-# What is this about?
+# What Is The Hive Nobel Prize System?
 ## The man behind it
 The account @anobel was created and is owned by me, @achimmertens. I believe, that the Hive ecosphere has big advantages and is especially appropriate to help people in need. So I try to invent a system, that has trustworthy curators, trustworthy authors and donators who finance the helpers in an efficient way.
 
 
-## The rules + The criteria
+## The Rules + The Criteria
 The curators look for posts, that contain:
 - Good written content from people helping other people or the environment
 - Pictures, to proof that this post is real and not spam or fake.
