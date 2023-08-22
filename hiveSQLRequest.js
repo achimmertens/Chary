@@ -50,6 +50,36 @@ function fillTemplate(recordset) {
   return filledTemplate;
 }
 
+// Funktion zum Extrahieren der Zahl aus der Zeichenkette
+function extractNumberFromChary(value) {
+  const match = value.match(/!CHARY:(\d+)/);
+  if (match) {
+    return parseInt(match[1]);
+  }
+  return null;
+}
+
+// Funktion zum Extrahieren des Accountnamens aus der URL
+function extractAccountFromUrl(url) {
+  const match = url.match(/@([^/]+)/);
+  if (match) {
+    return '@'+match[1];
+  }
+  return null;
+}
+
+// Funktion zum Modifizieren der URL
+function modifyUrl(url) {
+  const regex = /\/hive-.*?\/(@.*?)\//;
+  const match = url.match(regex);
+  if (match) {
+    const modifiedUrl = `https://peakd.com${url.split('#')[0]}`;
+    return modifiedUrl;
+  }
+  return null;
+}
+
+
 
 // Hauptfunktion
 async function main() {
@@ -62,13 +92,32 @@ async function main() {
     const data = await fs.promises.readFile('exampleRecordSet.json', 'utf8');
     const recordset = JSON.parse(data);
 
+    // Zahl aus der Zeichenkette extrahieren und in einer zusätzlichen Variable speichern
+    recordset.forEach((item) => {
+      item.charyNumber = extractNumberFromChary(item.body);
+      item.account = extractAccountFromUrl(item.url);
+      item.weburl = modifyUrl(item.url);
+    });
+
+    /*
+    // Accountnamen aus der URL extrahieren und in einer zusätzlichen Variable speichern
+    recordset.forEach((item) => {
+      item.account = extractAccountFromUrl(item.url);
+    });
+
+    recordset.forEach((item) => {
+      item.weburl = modifyUrl(item.url);
+    });
+    */
+
     // Vorlage mit Recordset füllen
     const filledTemplate = fillTemplate(recordset);
 
+    fs.writeFileSync('changedRecordSet.json', JSON.stringify(recordset));
     // Aktualisierte Vorlage in eine neue Datei schreiben
     fs.writeFileSync('FilledReportTemplate.md', filledTemplate);
 
-    console.log('Das FilleTemplate sieht so aus: ', filledTemplate);
+    console.log('Das FilledTemplate sieht so aus: ', filledTemplate);
   } catch (error) {
     console.error(error);
   }
