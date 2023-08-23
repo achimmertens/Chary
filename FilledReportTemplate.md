@@ -14,8 +14,8 @@ I am proud to announce, that I can send some money to people, which helped other
 |Place|Amount Hive|Winner|Reason|Url|Image|
 |-|-|-|-|-|-|
 |1.|10 Hive|@anobel|[REASON1]|[URL1]|[IMAGE1]|
-|2.|7 Hive|@achimmertens|[REASON2]|[URL2]|[IMAGE2]|
-|3.|3 Hive|@[AUTHOR3]|[REASON3]|[URL3]|[IMAGE3]|
+|2.|7 Hive|@idikachisom|[REASON2]|[URL2]|[IMAGE2]|
+|3.|3 Hive|@mr-chuks|[REASON3]|[URL3]|[IMAGE3]|
 
 
 
