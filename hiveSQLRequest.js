@@ -99,15 +99,22 @@ function datefilter(daterange, recordset) {
     return dateFilteredRecordset;
   }
 
-      // URL, Account und CharyNumber extrahieren und anhängen:
-function dataExtractAndAppend (dateFilteredRecordset){
-      dateFilteredRecordset.forEach((item) => {
-        item.charyNumber = extractNumberFromChary(item.body);
-        item.account = extractAccountFromUrl(item.url);
-        item.weburl = modifyUrl(item.url);
-      });
-    }
+// URL, Account und CharyNumber extrahieren und anhängen:
+async function dataExtractAndAppend(dateFilteredRecordset) {
+  dateFilteredRecordset.forEach((item) => {
+    item.charyNumber = extractNumberFromChary(item.body);
+    item.account = extractAccountFromUrl(item.url);
+    item.weburl = modifyUrl(item.url);
+  });
+}
 
+    // Filtern, dass anobel (und später weitere Peronen) nicht ausgewertet werden
+    function blackList (blackListedAccount, dateFilteredRecordset) {
+    const blacklistFilteredRecordset = dateFilteredRecordset.filter((item) => {
+      return item.account !== blackListedAccount;
+    });
+    return blacklistFilteredRecordset;
+  }
 
 // Hauptfunktion
 async function main() {
@@ -125,12 +132,10 @@ async function main() {
     const dateFilteredRecordset = datefilter(dateRange, recordset);
 
     // URL, Account und CharyNumber extrahieren und anhängen:
-    dataExtractAndAppend(dateFilteredRecordset);
+    await dataExtractAndAppend(dateFilteredRecordset);
 
-    const blacklistFilteredRecordset = dateFilteredRecordset.filter((item) => {
-      const blackListedAccount = 'anobel';
-      return item.account !== blackListedAccount;
-    });
+    // Filtern, dass anobel (und später weitere Peronen) nicht ausgewertet werden
+    var blacklistFilteredRecordset = blackList ('anobel', dateFilteredRecordset);
 
     // Recordset nach charyNumber sortieren
     blacklistFilteredRecordset.sort((a, b) => b.charyNumber - a.charyNumber);
