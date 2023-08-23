@@ -99,8 +99,19 @@ function datefilter(daterange, recordset) {
     return dateFilteredRecordset;
   }
 
+      // URL, Account und CharyNumber extrahieren und anhängen:
+function dataExtractAndAppend (dateFilteredRecordset){
+      dateFilteredRecordset.forEach((item) => {
+        item.charyNumber = extractNumberFromChary(item.body);
+        item.account = extractAccountFromUrl(item.url);
+        item.weburl = modifyUrl(item.url);
+      });
+    }
+
+
 // Hauptfunktion
 async function main() {
+  const dateRange = 7 // Number of days, that we want to observe in the dataset
   try {
     // SQL-Skript ausführen
     // const recordset = await executeScript();
@@ -110,14 +121,11 @@ async function main() {
     const data = await fs.promises.readFile('exampleRecordSet2.json', 'utf8');
     const recordset = JSON.parse(data);
 
-    const dateFilteredRecordset = datefilter(7, recordset)
+    // Datensatz auf dateRange Tage begrenzen
+    const dateFilteredRecordset = datefilter(dateRange, recordset);
 
     // URL, Account und CharyNumber extrahieren und anhängen:
-    dateFilteredRecordset.forEach((item) => {
-      item.charyNumber = extractNumberFromChary(item.body);
-      item.account = extractAccountFromUrl(item.url);
-      item.weburl = modifyUrl(item.url);
-    });
+    dataExtractAndAppend(dateFilteredRecordset);
 
     const blacklistFilteredRecordset = dateFilteredRecordset.filter((item) => {
       const blackListedAccount = 'anobel';
