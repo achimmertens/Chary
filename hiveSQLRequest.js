@@ -86,7 +86,18 @@ function fillTemplate(recordset) {
   return filledTemplate;
 }
 
+// Filtern der Datensätze basierend auf last_update:
+function datefilter(daterange, recordset) {
+    const currentDate = new Date();
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(currentDate.getDate() - daterange);
 
+    const dateFilteredRecordset = recordset.filter((item) => {
+      const lastUpdate = new Date(item.last_update);
+      return lastUpdate >= sevenDaysAgo && lastUpdate <= currentDate;
+    });
+    return dateFilteredRecordset;
+  }
 
 // Hauptfunktion
 async function main() {
@@ -99,15 +110,7 @@ async function main() {
     const data = await fs.promises.readFile('exampleRecordSet2.json', 'utf8');
     const recordset = JSON.parse(data);
 
-    // Filtern der Datensätze basierend auf last_update:
-    const currentDate = new Date();
-    const sevenDaysAgo = new Date();
-    sevenDaysAgo.setDate(currentDate.getDate() - 7);
-
-    const dateFilteredRecordset = recordset.filter((item) => {
-      const lastUpdate = new Date(item.last_update);
-      return lastUpdate >= sevenDaysAgo && lastUpdate <= currentDate;
-    });
+    const dateFilteredRecordset = datefilter(7, recordset)
 
     // URL, Account und CharyNumber extrahieren und anhängen:
     dateFilteredRecordset.forEach((item) => {
