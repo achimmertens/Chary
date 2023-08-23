@@ -67,21 +67,6 @@ function modifyUrl(url) {
   return null;
 }
 
-/*
-function fillTemplate(recordset) {
-  // Vorlagendatei lesen
-  const template = fs.readFileSync('ReportTemplate.md', 'utf8');
-
-  // Platzhalter ersetzen
-  let filledTemplate = template.replace('[AUTHOR1]', recordset[0].account);
-  filledTemplate = filledTemplate.replace('[AUTHOR2]', recordset[1].account);
-  filledTemplate = filledTemplate.replace('[AUTHOR3]', recordset[2].account);
-  // Weitere Platzhalter ersetzen...
-
-  // Aktualisierte Vorlage zurückgeben
-  return filledTemplate;
-}
-*/
 // Funktion zum Ersetzen der Platzhalter in der Vorlagendatei
 function fillTemplate(recordset) {
   // Vorlagendatei lesen
@@ -107,60 +92,57 @@ function fillTemplate(recordset) {
 async function main() {
   try {
     // SQL-Skript ausführen
-    const recordset = await executeScript();
-    fs.writeFileSync('exampleRecordSet2.json', JSON.stringify(recordset));
+    // const recordset = await executeScript();
+    // fs.writeFileSync('exampleRecordSet2.json', JSON.stringify(recordset));
 
     // Alternativ: JSON-Datei einlesen
-   // const data = await fs.promises.readFile('exampleRecordSet.json', 'utf8');
-   // const recordset = JSON.parse(data);
+    const data = await fs.promises.readFile('exampleRecordSet2.json', 'utf8');
+    const recordset = JSON.parse(data);
 
-    /*
-    // Zahl aus der Zeichenkette extrahieren und in einer zusätzlichen Variable speichern
-    recordset.forEach((item) => {
+    // Filtern der Datensätze basierend auf last_update:
+    const currentDate = new Date();
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(currentDate.getDate() - 7);
+
+    const dateFilteredRecordset = recordset.filter((item) => {
+      const lastUpdate = new Date(item.last_update);
+      return lastUpdate >= sevenDaysAgo && lastUpdate <= currentDate;
+    });
+
+    // URL, Account und CharyNumber extrahieren und anhängen:
+    dateFilteredRecordset.forEach((item) => {
       item.charyNumber = extractNumberFromChary(item.body);
       item.account = extractAccountFromUrl(item.url);
       item.weburl = modifyUrl(item.url);
     });
-*/
 
-   // Filtern der Datensätze basierend auf last_update
-   const currentDate = new Date();
-   const sevenDaysAgo = new Date();
-   sevenDaysAgo.setDate(currentDate.getDate() - 7);
+    const blacklistFilteredRecordset = dateFilteredRecordset.filter((item) => {
+      const blackListedAccount = 'anobel';
+      return item.account !== blackListedAccount;
+    });
 
-   const filteredRecordset = recordset.filter((item) => {
-     const lastUpdate = new Date(item.last_update);
-     return lastUpdate >= sevenDaysAgo && lastUpdate <= currentDate;
-   });
-
-   // URL modifizieren und in einer zusätzlichen Variable speichern
-   filteredRecordset.forEach((item) => {
-    item.charyNumber = extractNumberFromChary(item.body);
-    item.account = extractAccountFromUrl(item.url);
-    item.weburl = modifyUrl(item.url);
-   });
-
-   // Recordset nach charyNumber sortieren
-   filteredRecordset.sort((a, b) => b.charyNumber - a.charyNumber);
+    // Recordset nach charyNumber sortieren
+    blacklistFilteredRecordset.sort((a, b) => b.charyNumber - a.charyNumber);
 
     // Vorlage mit Recordset füllen
-    var filledTemplate = fillTemplate(filteredRecordset);
+    var filledTemplate = fillTemplate(blacklistFilteredRecordset);
 
-   // Platzhalter ersetzen
-     for (let i = 0; i < Math.min(filteredRecordset.length, 3); i++) {
-     const author = filteredRecordset[i].charyNumber ? filteredRecordset[i].account : `[AUTHOR${i + 1}]`;
-     filledTemplate = filledTemplate.replace(`[AUTHOR${i + 1}]`, author);
-   }
-
-
+    // Platzhalter ersetzen
+    for (let i = 0; i < Math.min(blacklistFilteredRecordset.length, 3); i++) {
+      const author = blacklistFilteredRecordset[i].charyNumber ? blacklistFilteredRecordset[i].account : `[AUTHOR${i + 1}]`;
+      filledTemplate = filledTemplate.replace(`[AUTHOR${i + 1}]`, author);
+    }
 
 
 
 
-    fs.writeFileSync('changedRecordSet.json', JSON.stringify(filteredRecordset));
+
+
+    fs.writeFileSync('changedRecordSet.json', JSON.stringify(blacklistFilteredRecordset));
     // Aktualisierte Vorlage in eine neue Datei schreiben
     fs.writeFileSync('FilledReportTemplate.md', filledTemplate);
 
+    console.log('Der BlacklistedRecordSet sieht so aus: ', JSON.stringify(blacklistFilteredRecordset));
     console.log('Das FilledTemplate sieht so aus: ', filledTemplate);
   } catch (error) {
     console.error(error);
