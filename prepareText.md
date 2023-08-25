@@ -5,6 +5,12 @@
 
 
 Vorherige Gewinner:
+25.08.2023:
+|Place|Amount Hive|Winner|Reason|Url|Image|
+|-|-|-|-|-|-|
+|1.|6.5 Hive|@najopathan|Cleaning the planet|https://peakd.com/hive-150210/@najopathan/my-cleaning-activity-post-37|![](https://images.hive.blog/0x0/https://files.peakd.com/file/peakd-hive/najopathan/23x14eU1btKevzRXxX6H4YRRjVUYZdBY1H5mMcbU66fu2GS84pbceR8hypmy33zKtMM7y.jpg)|
+|1.|6.5 Hive|@idikachisom|Cleaning the planet|https://peakd.com/hive-150210/@idikachisom/my-cleanplanet-activity-22-8-2023|![](https://images.hive.blog/DQmTgS35bhBDC8iQNnSWjLk4dbF526MgquFzmDfZLkoD22K/TimePhoto_20230822_185431.jpg)|
+|1.|6.5 Hive|@mr-chuks|Cleaning the planet|https://peakd.com/hive-150210/@mr-chuks/my-cleaning-activities|![](https://images.ecency.com/DQmfM1h7kBYmffp3LW9ZbrUaEgLGT7gHvdV8Nie7Wsg9bCN/timephoto_20230817_182445.jpg)|
 
 
 18.8.2023:

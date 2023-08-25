@@ -119,15 +119,18 @@ async function dataExtractAndAppend(dateFilteredRecordset) {
 // Hauptfunktion
 async function main() {
   const dateRange = 7 // Number of days, that we want to observe in the dataset
+  const datasource = 'file'  // 'sql' or 'file'
   try {
-    // SQL-Skript ausführen
-    // const recordset = await executeScript();
-    // fs.writeFileSync('exampleRecordSet2.json', JSON.stringify(recordset));
-
-    // Alternativ: JSON-Datei einlesen
-    const data = await fs.promises.readFile('exampleRecordSet2.json', 'utf8');
-    const recordset = JSON.parse(data);
-
+    if (datasource == 'sql') {
+      // SQL-Skript ausführen
+      const recordset = await executeScript();
+      fs.writeFileSync('exampleRecordSet2.json', JSON.stringify(recordset));
+    }
+    else {
+      // Alternativ: JSON-Datei einlesen
+      const data = await fs.promises.readFile('exampleRecordSet2.json', 'utf8');
+      const recordset = JSON.parse(data);
+    }
     // Datensatz auf dateRange Tage begrenzen
     const dateFilteredRecordset = datefilter(dateRange, recordset);
 

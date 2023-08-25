@@ -11,18 +11,20 @@ I am proud to announce, that I can send some money to people, which helped other
 
 # Here are the winners of the last week:
 
+This week we have three times a number one:
 |Place|Amount Hive|Winner|Reason|Url|Image|
 |-|-|-|-|-|-|
-|1.|10 Hive|@najopathan|[REASON1]|[URL1]|[IMAGE1]|
-|2.|7 Hive|@idikachisom|[REASON2]|[URL2]|[IMAGE2]|
-|3.|3 Hive|@mr-chuks|[REASON3]|[URL3]|[IMAGE3]|
+|1.|6.5 Hive|@najopathan|Cleaning the planet|https://peakd.com/hive-150210/@najopathan/my-cleaning-activity-post-37|![](https://images.hive.blog/0x0/https://files.peakd.com/file/peakd-hive/najopathan/23x14eU1btKevzRXxX6H4YRRjVUYZdBY1H5mMcbU66fu2GS84pbceR8hypmy33zKtMM7y.jpg)|
+|1.|6.5 Hive|@idikachisom|Cleaning the planet|https://peakd.com/hive-150210/@idikachisom/my-cleanplanet-activity-22-8-2023|![](https://images.hive.blog/DQmTgS35bhBDC8iQNnSWjLk4dbF526MgquFzmDfZLkoD22K/TimePhoto_20230822_185431.jpg)|
+|1.|6.5 Hive|@mr-chuks|Cleaning the planet|https://peakd.com/hive-150210/@mr-chuks/my-cleaning-activities|![](https://images.ecency.com/DQmfM1h7kBYmffp3LW9ZbrUaEgLGT7gHvdV8Nie7Wsg9bCN/timephoto_20230817_182445.jpg)|
 
 
 
 The money has already been sent:
 
-[IMAGE_SEND_MONEY]
+![image.png](https://files.peakd.com/file/peakd-hive/anobel/Eo6BhJsA3wBCWr9LrSL9gWAJ36KT1p4mLqyKefXgejwci7XwN7KjfZSTwMPApjWvi1B.png)
 *Screenshot of the @anobel wallet from today*
+
 
 # What Is The Hive Nobel Prize System?
 ## The man behind it
