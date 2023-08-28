@@ -1,7 +1,7 @@
 const sql = require('mssql');
 const { password1 } = require('./config');
 const fs = require('fs');
-//const { dateframe } = require('./dateframe');
+const { dateFrame } = require('./dateFrame.js');
 
 // Konfigurationsobjekt für die Verbindung zum SQL Server
 const config = {
@@ -154,25 +154,19 @@ async function main() {
     // Vorlage mit Recordset füllen
     var filledTemplate = fillTemplate(blacklistFilteredRecordset);
 
-    // Platzhalter ersetzen
-    // for (let i = 0; i < Math.min(blacklistFilteredRecordset.length, 3); i++) {
-    //   const author = blacklistFilteredRecordset[i].charyNumber ? blacklistFilteredRecordset[i].account : `[AUTHOR${i + 1}]`;
-    //   filledTemplate = filledTemplate.replace(`[AUTHOR${i + 1}]`, author);
-    //   const url = blacklistFilteredRecordset[i].charyNumber ? blacklistFilteredRecordset[i].weburl : `[URL${i + 1}]`;
-    //   filledTemplate = filledTemplate.replace(`[URL${i + 1}]`, url);
-    // }
+    // Datum im filledTemplate reinschreiben
+  
+    dateText = dateFrame(dateRange);
+    filledTemplate = filledTemplate.replace(`[DATE_FRAME]`, dateText)
 
-
-
-
-
-
+    console.log('Der BlacklistedRecordSet sieht so aus: ', JSON.stringify(blacklistFilteredRecordset));
+    console.log('Das FilledTemplate sieht so aus: ', filledTemplate);
+    
     fs.writeFileSync('changedRecordSet.json', JSON.stringify(blacklistFilteredRecordset));
     // Aktualisierte Vorlage in eine neue Datei schreiben
     fs.writeFileSync('FilledReportTemplate.md', filledTemplate);
 
-    console.log('Der BlacklistedRecordSet sieht so aus: ', JSON.stringify(blacklistFilteredRecordset));
-    console.log('Das FilledTemplate sieht so aus: ', filledTemplate);
+
   } catch (error) {
     console.error(error);
   }

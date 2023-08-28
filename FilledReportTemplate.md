@@ -3,7 +3,7 @@ Hello hivers, curators, donators, helping people, and all others,
 
 This is the
 # Hive Nobel Prizes Award For The Last Week
-The timeframe is from [DATE_FRAME].
+The timeframe is from 2023-08-21 to 2023-08-28.
 
 ![image.png](https://files.peakd.com/file/peakd-hive/anobel/23wgU5QrADfW17UpV728xedX7gC8tRcBDB9vDg8N39QbJU5cXyK6zcvLGPH28LwuTZYkk.png)
 

@@ -1,3 +1,4 @@
+function dateFrame(timeframe) {
 let timeFrame = 7;
 let oneWeekAgo = new Date();
 let currentDate = new Date();
@@ -9,7 +10,7 @@ let oneWeekAgoString = oneWeekAgo.toISOString().slice(0, 10)+"T05:30:00.000Z";
 //currentDateString = '2023-05-16T07:30:08.988Z'
 let dateFrame = `${oneWeekAgoString.slice(0, 10)} to ${currentDateString.slice(0, 10)}`;
 console.log("dateFrame = ",dateFrame);
+return dateFrame
+}
 
-module.exports = {
-    dateframe,
-  };
+module.exports = { dateFrame };
