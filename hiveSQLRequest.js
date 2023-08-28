@@ -68,7 +68,7 @@ function modifyUrl(url) {
 }
 
 // Funktion zum Ersetzen der Platzhalter in der Vorlagendatei
-function fillTemplate(recordset) {
+function fillTemplate(dateRange, recordset) {
   // Vorlagendatei lesen
   const template = fs.readFileSync('ReportTemplate.md', 'utf8');
 
@@ -86,22 +86,26 @@ function fillTemplate(recordset) {
     filledTemplate = filledTemplate.replace(`[REASON${i + 1}]`, body);
   }
 
+  // Datum im filledTemplate reinschreiben
+  dateText = dateFrame(dateRange);
+  filledTemplate = filledTemplate.replace(`[DATE_FRAME]`, dateText)
+
   // Aktualisierte Vorlage zurückgeben
   return filledTemplate;
 }
 
 // Filtern der Datensätze basierend auf last_update:
-function datefilter(daterange, recordset) {
-    const currentDate = new Date();
-    const sevenDaysAgo = new Date();
-    sevenDaysAgo.setDate(currentDate.getDate() - daterange);
+function datefilter(dateRange, recordset) {
+  const currentDate = new Date();
+  const sevenDaysAgo = new Date();
+  sevenDaysAgo.setDate(currentDate.getDate() - dateRange);
 
-    const dateFilteredRecordset = recordset.filter((item) => {
-      const lastUpdate = new Date(item.last_update);
-      return lastUpdate >= sevenDaysAgo && lastUpdate <= currentDate;
-    });
-    return dateFilteredRecordset;
-  }
+  const dateFilteredRecordset = recordset.filter((item) => {
+    const lastUpdate = new Date(item.last_update);
+    return lastUpdate >= sevenDaysAgo && lastUpdate <= currentDate;
+  });
+  return dateFilteredRecordset;
+}
 
 // URL, Account und CharyNumber extrahieren und anhängen:
 async function dataExtractAndAppend(dateFilteredRecordset) {
@@ -112,19 +116,19 @@ async function dataExtractAndAppend(dateFilteredRecordset) {
   });
 }
 
-    // Filtern, dass anobel (und später weitere Peronen) nicht ausgewertet werden
-    function blackList (blackListedAccount, dateFilteredRecordset) {
-    const blacklistFilteredRecordset = dateFilteredRecordset.filter((item) => {
-      return item.account !== blackListedAccount;
-    });
-    return blacklistFilteredRecordset;
-  }
+// Filtern, dass anobel (und später weitere Peronen) nicht ausgewertet werden
+function blackList(blackListedAccount, dateFilteredRecordset) {
+  const blacklistFilteredRecordset = dateFilteredRecordset.filter((item) => {
+    return item.account !== blackListedAccount;
+  });
+  return blacklistFilteredRecordset;
+}
 
 // Hauptfunktion
 async function main() {
   const dateRange = 7 // Number of days, that we want to observe in the dataset
   const datasource = 'file'  // 'sql' or 'file'
-  let recordset; // Variable initialisieren
+  let recordset; // Variable initialisieren für die If-Klausel
 
   try {
     if (datasource == 'sql') {
@@ -138,7 +142,6 @@ async function main() {
       recordset = JSON.parse(data);
     }
 
-
     // Datensatz auf dateRange Tage begrenzen
     const dateFilteredRecordset = datefilter(dateRange, recordset);
 
@@ -146,26 +149,20 @@ async function main() {
     await dataExtractAndAppend(dateFilteredRecordset);
 
     // Filtern, dass anobel (und später weitere Peronen) nicht ausgewertet werden
-    var blacklistFilteredRecordset = blackList ('anobel', dateFilteredRecordset);
+    var blacklistFilteredRecordset = blackList('anobel', dateFilteredRecordset);
 
     // Recordset nach charyNumber sortieren
     blacklistFilteredRecordset.sort((a, b) => b.charyNumber - a.charyNumber);
 
     // Vorlage mit Recordset füllen
-    var filledTemplate = fillTemplate(blacklistFilteredRecordset);
-
-    // Datum im filledTemplate reinschreiben
-  
-    dateText = dateFrame(dateRange);
-    filledTemplate = filledTemplate.replace(`[DATE_FRAME]`, dateText)
+    var filledTemplate = fillTemplate(dateRange, blacklistFilteredRecordset);
 
     console.log('Der BlacklistedRecordSet sieht so aus: ', JSON.stringify(blacklistFilteredRecordset));
     console.log('Das FilledTemplate sieht so aus: ', filledTemplate);
-    
+
     fs.writeFileSync('changedRecordSet.json', JSON.stringify(blacklistFilteredRecordset));
     // Aktualisierte Vorlage in eine neue Datei schreiben
     fs.writeFileSync('FilledReportTemplate.md', filledTemplate);
-
 
   } catch (error) {
     console.error(error);
@@ -174,11 +171,3 @@ async function main() {
 
 // Hauptfunktion aufrufen
 main();
-
-
-
-
-
-
-
-
