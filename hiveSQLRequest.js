@@ -80,6 +80,10 @@ function fillTemplate(recordset) {
   for (let i = 0; i < Math.min(recordset.length, 3); i++) {
     const author = recordset[i].charyNumber ? recordset[i].account : `[AUTHOR${i + 1}]`;
     filledTemplate = filledTemplate.replace(`[AUTHOR${i + 1}]`, author);
+    const url = recordset[i].charyNumber ? recordset[i].weburl : `[URL${i + 1}]`;
+    filledTemplate = filledTemplate.replace(`[URL${i + 1}]`, url);
+    const body = recordset[i].charyNumber ? recordset[i].body : `[REASON${i + 1}]`;
+    filledTemplate = filledTemplate.replace(`[REASON${i + 1}]`, body);
   }
 
   // Aktualisierte Vorlage zurückgeben
@@ -120,17 +124,21 @@ async function dataExtractAndAppend(dateFilteredRecordset) {
 async function main() {
   const dateRange = 7 // Number of days, that we want to observe in the dataset
   const datasource = 'file'  // 'sql' or 'file'
+  let recordset; // Variable initialisieren
+
   try {
     if (datasource == 'sql') {
       // SQL-Skript ausführen
-      const recordset = await executeScript();
+      recordset = await executeScript();
       fs.writeFileSync('exampleRecordSet2.json', JSON.stringify(recordset));
     }
     else {
       // Alternativ: JSON-Datei einlesen
       const data = await fs.promises.readFile('exampleRecordSet2.json', 'utf8');
-      const recordset = JSON.parse(data);
+      recordset = JSON.parse(data);
     }
+
+
     // Datensatz auf dateRange Tage begrenzen
     const dateFilteredRecordset = datefilter(dateRange, recordset);
 
@@ -147,10 +155,12 @@ async function main() {
     var filledTemplate = fillTemplate(blacklistFilteredRecordset);
 
     // Platzhalter ersetzen
-    for (let i = 0; i < Math.min(blacklistFilteredRecordset.length, 3); i++) {
-      const author = blacklistFilteredRecordset[i].charyNumber ? blacklistFilteredRecordset[i].account : `[AUTHOR${i + 1}]`;
-      filledTemplate = filledTemplate.replace(`[AUTHOR${i + 1}]`, author);
-    }
+    // for (let i = 0; i < Math.min(blacklistFilteredRecordset.length, 3); i++) {
+    //   const author = blacklistFilteredRecordset[i].charyNumber ? blacklistFilteredRecordset[i].account : `[AUTHOR${i + 1}]`;
+    //   filledTemplate = filledTemplate.replace(`[AUTHOR${i + 1}]`, author);
+    //   const url = blacklistFilteredRecordset[i].charyNumber ? blacklistFilteredRecordset[i].weburl : `[URL${i + 1}]`;
+    //   filledTemplate = filledTemplate.replace(`[URL${i + 1}]`, url);
+    // }
 
 
 

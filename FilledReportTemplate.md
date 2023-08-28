@@ -11,20 +11,24 @@ I am proud to announce, that I can send some money to people, which helped other
 
 # Here are the winners of the last week:
 
-This week we have three times a number one:
 |Place|Amount Hive|Winner|Reason|Url|Image|
 |-|-|-|-|-|-|
-|1.|6.5 Hive|@najopathan|Cleaning the planet|https://peakd.com/hive-150210/@najopathan/my-cleaning-activity-post-37|![](https://images.hive.blog/0x0/https://files.peakd.com/file/peakd-hive/najopathan/23x14eU1btKevzRXxX6H4YRRjVUYZdBY1H5mMcbU66fu2GS84pbceR8hypmy33zKtMM7y.jpg)|
-|1.|6.5 Hive|@idikachisom|Cleaning the planet|https://peakd.com/hive-150210/@idikachisom/my-cleanplanet-activity-22-8-2023|![](https://images.hive.blog/DQmTgS35bhBDC8iQNnSWjLk4dbF526MgquFzmDfZLkoD22K/TimePhoto_20230822_185431.jpg)|
-|1.|6.5 Hive|@mr-chuks|Cleaning the planet|https://peakd.com/hive-150210/@mr-chuks/my-cleaning-activities|![](https://images.ecency.com/DQmfM1h7kBYmffp3LW9ZbrUaEgLGT7gHvdV8Nie7Wsg9bCN/timephoto_20230817_182445.jpg)|
+|1.|10 Hive|@elkezaksek|!CHARY:10
+Hi Elke,
+Danke fürs Kümmern!!!
+Hoffen wir, dass wir das Geld zusammen bekommen!|https://peakd.com/hive-150329/@elkezaksek/news-about-our-fundraiser-for-uganda-neuigkeiten-unserer-spendenaktion-fuer-uganda-196|[IMAGE1]|
+|2.|7 Hive|@najopathan|Hi @najopathan,
+thank you very much for cleaning your environment!
+!CHARY:4|https://peakd.com/hive-150210/@najopathan/my-cleaning-activity-post-37|[IMAGE2]|
+|3.|3 Hive|@idikachisom|Thank you for cleaning your environment!
+!CHARY:3|https://peakd.com/hive-150210/@idikachisom/my-cleanplanet-activity-22-8-2023|[IMAGE3]|
 
 
 
 The money has already been sent:
 
-![image.png](https://files.peakd.com/file/peakd-hive/anobel/Eo6BhJsA3wBCWr9LrSL9gWAJ36KT1p4mLqyKefXgejwci7XwN7KjfZSTwMPApjWvi1B.png)
+[IMAGE_SEND_MONEY]
 *Screenshot of the @anobel wallet from today*
-
 
 # What Is The Hive Nobel Prize System?
 ## The man behind it
