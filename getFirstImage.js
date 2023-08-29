@@ -13,15 +13,14 @@ async function getFirstImage(url) {
     const body = jsonData.post.body;
     const regex = /!\[.*?\]\((.*?)\)/;
     const match = body.match(regex);
-    const firstImage = match ? match[1] : null;
+    const firstImage = match ? match[0] : null;
 
-    // Loggen des ersten Treffers des Feldes "body"
-    console.log(firstImage);
+    // Rückgabe des Ergebnisses
+    return firstImage;
   } catch (error) {
     console.error(error);
+    return null;
   }
 }
 
-// Beispielaufruf der Funktion
-const url = "/hive-150210/@alifkhan1995/todays-cleanplanet-activity--day-50---date-22082023-#@alifkhan1995/re-achimmertens-rzu2rc";
-getFirstImage(url);
+module.exports = getFirstImage;

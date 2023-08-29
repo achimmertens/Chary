@@ -2,6 +2,7 @@ const sql = require('mssql');
 const { password1 } = require('./config');
 const fs = require('fs');
 const { dateFrame } = require('./dateFrame.js');
+const getFirstImage = require('./getFirstImage');
 
 // Konfigurationsobjekt für die Verbindung zum SQL Server
 const config = {
@@ -68,7 +69,7 @@ function modifyUrl(url) {
 }
 
 // Funktion zum Ersetzen der Platzhalter in der Vorlagendatei
-function fillTemplate(dateRange, recordset) {
+async function fillTemplate(dateRange, recordset) {
   // Vorlagendatei lesen
   const template = fs.readFileSync('ReportTemplate.md', 'utf8');
 
@@ -80,10 +81,15 @@ function fillTemplate(dateRange, recordset) {
   for (let i = 0; i < Math.min(recordset.length, 3); i++) {
     const author = recordset[i].charyNumber ? recordset[i].account : `[AUTHOR${i + 1}]`;
     filledTemplate = filledTemplate.replace(`[AUTHOR${i + 1}]`, author);
-    const url = recordset[i].charyNumber ? recordset[i].weburl : `[URL${i + 1}]`;
-    filledTemplate = filledTemplate.replace(`[URL${i + 1}]`, url);
+    const weburl = recordset[i].charyNumber ? recordset[i].weburl : `[URL${i + 1}]`;
+    filledTemplate = filledTemplate.replace(`[URL${i + 1}]`, weburl);
     const body = recordset[i].charyNumber ? recordset[i].body : `[REASON${i + 1}]`;
     filledTemplate = filledTemplate.replace(`[REASON${i + 1}]`, body);
+
+    //const url = "/hive-150210/@alifkhan1995/todays-cleanplanet-activity--day-50---date-22082023-#@alifkhan1995/re-achimmertens-rzu2rc";
+    const url = recordset[i].charyNumber ? recordset[i].url : `[URL${i + 1}]`;
+    const firstImageUrl = await getFirstImage(url);
+    filledTemplate = filledTemplate.replace(`[IMAGE${i + 1}]`, firstImageUrl);
   }
 
   // Datum im filledTemplate reinschreiben
@@ -155,7 +161,7 @@ async function main() {
     blacklistFilteredRecordset.sort((a, b) => b.charyNumber - a.charyNumber);
 
     // Vorlage mit Recordset füllen
-    var filledTemplate = fillTemplate(dateRange, blacklistFilteredRecordset);
+    var filledTemplate = await fillTemplate(dateRange, blacklistFilteredRecordset);
 
     console.log('Der BlacklistedRecordSet sieht so aus: ', JSON.stringify(blacklistFilteredRecordset));
     console.log('Das FilledTemplate sieht so aus: ', filledTemplate);
