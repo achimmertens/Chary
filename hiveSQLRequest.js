@@ -181,6 +181,6 @@ async function main() {
 main();
 
 // ToDO: URL vom ersten Bild einfügen -> done
-// ToDo: Reputation vom Autor einfügen
+// ToDo: Reputation vom Autor einfügen -> done
 // TODO: StakedChary vom Autor einfügen
 // ToDO: CharyNumber+Reputation+StakedChary sinnvoll addieren <- Danach sortieren
