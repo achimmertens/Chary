@@ -2,7 +2,7 @@ const sql = require('mssql');
 const { password1 } = require('./config');
 const fs = require('fs');
 const { dateFrame } = require('./dateFrame.js');
-const getFirstImage = require('./getFirstImage');
+const getMetaData = require('./getMetaData');
 
 // Konfigurationsobjekt für die Verbindung zum SQL Server
 const config = {
@@ -88,8 +88,10 @@ async function fillTemplate(dateRange, recordset) {
 
     //const url = "/hive-150210/@alifkhan1995/todays-cleanplanet-activity--day-50---date-22082023-#@alifkhan1995/re-achimmertens-rzu2rc";
     const url = recordset[i].charyNumber ? recordset[i].url : `[URL${i + 1}]`;
-    const firstImageUrl = await getFirstImage(url);
+    const [firstImageUrl, authorReputation] = await getMetaData(url);
     filledTemplate = filledTemplate.replace(`[IMAGE${i + 1}]`, firstImageUrl);
+    console.log ("authorReputation = ", authorReputation);
+    recordset[i].originAuthorReputation = authorReputation;
   }
 
   // Datum im filledTemplate reinschreiben
@@ -178,7 +180,7 @@ async function main() {
 // Hauptfunktion aufrufen
 main();
 
-// ToDO: URL vom ersten Bild einfügen
+// ToDO: URL vom ersten Bild einfügen -> done
 // ToDo: Reputation vom Autor einfügen
 // TODO: StakedChary vom Autor einfügen
 // ToDO: CharyNumber+Reputation+StakedChary sinnvoll addieren <- Danach sortieren

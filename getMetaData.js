@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-async function getFirstImage(url) {
+async function getMetaData(url) {
   // Preparieren der URL
   const preparedUrl = `https://hive.blog${url.split('#')[0]}.json`;
 
@@ -14,13 +14,14 @@ async function getFirstImage(url) {
     const regex = /!\[.*?\]\((.*?)\)/;
     const match = body.match(regex);
     const firstImage = match ? match[0] : null;
+    const authorReputation = jsonData.post.author_reputation;
 
     // Rückgabe des Ergebnisses
-    return firstImage;
+    return [firstImage, authorReputation];
   } catch (error) {
     console.error(error);
     return null;
   }
 }
 
-module.exports = getFirstImage;
+module.exports = getMetaData;
