@@ -3,6 +3,7 @@ const { password1 } = require('./config');
 const fs = require('fs');
 const { dateFrame } = require('./dateFrame.js');
 const getMetaData = require('./getMetaData');
+const getStakedChary = require('./getStakedChary');
 
 // Konfigurationsobjekt für die Verbindung zum SQL Server
 const config = {
@@ -74,7 +75,7 @@ async function fillTemplate(dateRange, recordset) {
   const template = fs.readFileSync('ReportTemplate.md', 'utf8');
 
   // Recordset nach charyNumber sortieren
-  recordset.sort((a, b) => b.charyNumber - a.charyNumber);
+    recordset.sort((a, b) => b.charyNumber - a.charyNumber);
 
   // Platzhalter ersetzen
   let filledTemplate = template;
@@ -115,12 +116,34 @@ function datefilter(dateRange, recordset) {
   return dateFilteredRecordset;
 }
 
+async function calculateCharyScore(charyNumber, stakedChary, authorReputation){
+  charyNumberMax=10
+  if (charyNumber > charyNumberMax){charyNumber=charyNumberMax}
+  authorReputationMax=100000000000; //100*10^9
+  if (authorReputation>authorReputationMax) {authorReputation=authorReputationMax}
+  stakedCharyMax=100000
+  if (stakedChary > stakedCharyMax){stakedChary=stakedCharyMax}
+  charyNumberPart = charyNumber/charyNumberMax;
+  stakedCharyPart = stakedChary/stakedCharyMax;
+  authorReputationPart = authorReputation/authorReputationMax;
+  console.log("charyNumberPart = ",charyNumberPart,", authorReputationPart = ", authorReputationPart,", stakeCharyPart = ",stakedCharyPart);
+  charyScore = 7*charyNumberPart+2*authorReputationPart+1*stakedCharyPart;
+  console.log("charyScore = ",charyScore)
+  return charyScore;
+}
+
 // URL, Account und CharyNumber extrahieren und anhängen:
 async function dataExtractAndAppend(dateFilteredRecordset) {
-  dateFilteredRecordset.forEach((item) => {
+  dateFilteredRecordset.forEach(async (item) => {
     item.charyNumber = extractNumberFromChary(item.body);
     item.account = extractAccountFromUrl(item.url);
     item.weburl = modifyUrl(item.url);
+    console.log ("dataExtractAndAppend - Author der !CHARY-Meldung:", item.author);
+    item.stakedChary = await getStakedChary(item.author)
+    const [firstImageUrl, authorReputation] = await getMetaData(item.url);
+    item.originAuthorReputation = authorReputation;
+    item.firstImageUrl = firstImageUrl
+    item.charyScore= await calculateCharyScore(item.charyNumber, item.stakedChary, authorReputation);
   });
 }
 
@@ -134,7 +157,7 @@ function blackList(blackListedAccount, dateFilteredRecordset) {
 
 // Hauptfunktion
 async function main() {
-  const dateRange = 7 // Number of days, that we want to observe in the dataset
+  const dateRange = 14 // Number of days, that we want to observe in the dataset
   const datasource = 'file'  // 'sql' or 'file'
   let recordset; // Variable initialisieren für die If-Klausel
 
