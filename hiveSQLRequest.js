@@ -4,6 +4,7 @@ const fs = require('fs');
 const { dateFrame } = require('./dateFrame.js');
 const getMetaData = require('./getMetaData');
 const getStakedChary = require('./getStakedChary');
+//const math = require('math');
 
 // Konfigurationsobjekt für die Verbindung zum SQL Server
 const config = {
@@ -119,17 +120,19 @@ function datefilter(dateRange, recordset) {
 async function calculateCharyScore(charyNumber, stakedChary, authorReputation){
   charyNumberMax=10
   if (charyNumber > charyNumberMax){charyNumber=charyNumberMax}
-  authorReputationMax=100000000000; //100*10^9
-  if (authorReputation>authorReputationMax) {authorReputation=authorReputationMax}
+  authorReputationMax=15; //10^15
+  authorReputationLog=Math.log10(authorReputation);
+  if (authorReputationLog>authorReputationMax) {authorReputationLog=authorReputationMax}
   stakedCharyMax=100000
   if (stakedChary > stakedCharyMax){stakedChary=stakedCharyMax}
   charyNumberPart = charyNumber/charyNumberMax;
   stakedCharyPart = stakedChary/stakedCharyMax;
-  authorReputationPart = authorReputation/authorReputationMax;
+  authorReputationPart = authorReputationLog/authorReputationMax;
+  console.log("charyNumber = ",charyNumber,", authorReputation = ", authorReputationLog,", stakedChary = ",stakedChary);
   console.log("charyNumberPart = ",charyNumberPart,", authorReputationPart = ", authorReputationPart,", stakeCharyPart = ",stakedCharyPart);
   charyScore = 7*charyNumberPart+2*authorReputationPart+1*stakedCharyPart;
   console.log("charyScore = ",charyScore)
-  return charyScore;
+  return charyScore.toFixed(3);
 }
 
 // URL, Account und CharyNumber extrahieren und anhängen:
@@ -183,7 +186,7 @@ async function main() {
     var blacklistFilteredRecordset = blackList('anobel', dateFilteredRecordset);
 
     // Recordset nach charyNumber sortieren
-    blacklistFilteredRecordset.sort((a, b) => b.charyNumber - a.charyNumber);
+    blacklistFilteredRecordset.sort((a, b) => b.charyScore - a.charyScore);
 
     // Vorlage mit Recordset füllen
     var filledTemplate = await fillTemplate(dateRange, blacklistFilteredRecordset);
