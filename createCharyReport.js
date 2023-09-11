@@ -76,7 +76,7 @@ async function fillTemplate(dateRange, recordset) {
   const template = fs.readFileSync('ReportTemplate.md', 'utf8');
 
   // Recordset nach charyNumber sortieren
-    recordset.sort((a, b) => b.charyNumber - a.charyNumber);
+  recordset.sort((a, b) => b.charyNumber - a.charyNumber);
 
   // Platzhalter ersetzen
   let filledTemplate = template;
@@ -92,7 +92,7 @@ async function fillTemplate(dateRange, recordset) {
     const url = recordset[i].charyNumber ? recordset[i].url : `[URL${i + 1}]`;
     const [firstImageUrl, authorReputation] = await getMetaData(url);
     filledTemplate = filledTemplate.replace(`[IMAGE${i + 1}]`, firstImageUrl);
-    console.log ("authorReputation = ", authorReputation);
+    console.log("authorReputation = ", authorReputation);
     recordset[i].originAuthorReputation = authorReputation;
   }
 
@@ -117,21 +117,21 @@ function datefilter(dateRange, recordset) {
   return dateFilteredRecordset;
 }
 
-async function calculateCharyScore(charyNumber, stakedChary, authorReputation){
-  charyNumberMax=10
-  if (charyNumber > charyNumberMax){charyNumber=charyNumberMax}
-  authorReputationMax=15; //10^15
-  authorReputationLog=Math.log10(authorReputation);
-  if (authorReputationLog>authorReputationMax) {authorReputationLog=authorReputationMax}
-  stakedCharyMax=100000
-  if (stakedChary > stakedCharyMax){stakedChary=stakedCharyMax}
-  charyNumberPart = charyNumber/charyNumberMax;
-  stakedCharyPart = stakedChary/stakedCharyMax;
-  authorReputationPart = authorReputationLog/authorReputationMax;
-  console.log("charyNumber = ",charyNumber,", authorReputation = ", authorReputationLog,", stakedChary = ",stakedChary);
-  console.log("charyNumberPart = ",charyNumberPart,", authorReputationPart = ", authorReputationPart,", stakeCharyPart = ",stakedCharyPart);
-  charyScore = 7*charyNumberPart+2*authorReputationPart+1*stakedCharyPart;
-  console.log("charyScore = ",charyScore)
+async function calculateCharyScore(charyNumber, stakedChary, authorReputation) {
+  charyNumberMax = 10
+  if (charyNumber > charyNumberMax) { charyNumber = charyNumberMax }
+  authorReputationMax = 15; //10^15
+  authorReputationLog = Math.log10(authorReputation);
+  if (authorReputationLog > authorReputationMax) { authorReputationLog = authorReputationMax }
+  stakedCharyMax = 100000
+  if (stakedChary > stakedCharyMax) { stakedChary = stakedCharyMax }
+  charyNumberPart = charyNumber / charyNumberMax;
+  stakedCharyPart = stakedChary / stakedCharyMax;
+  authorReputationPart = authorReputationLog / authorReputationMax;
+  console.log("charyNumber = ", charyNumber, ", authorReputation = ", authorReputationLog, ", stakedChary = ", stakedChary);
+  console.log("charyNumberPart = ", charyNumberPart, ", authorReputationPart = ", authorReputationPart, ", stakeCharyPart = ", stakedCharyPart);
+  charyScore = 7 * charyNumberPart + 2 * authorReputationPart + 1 * stakedCharyPart;
+  console.log("charyScore = ", charyScore)
   return charyScore.toFixed(3);
 }
 
@@ -141,12 +141,12 @@ async function dataExtractAndAppend(dateFilteredRecordset) {
     item.charyNumber = extractNumberFromChary(item.body);
     item.account = extractAccountFromUrl(item.url);
     item.weburl = modifyUrl(item.url);
-    console.log ("dataExtractAndAppend - Author der !CHARY-Meldung:", item.author);
+    console.log("dataExtractAndAppend - Author der !CHARY-Meldung:", item.author);
     item.stakedChary = await getStakedChary(item.author)
     const [firstImageUrl, authorReputation] = await getMetaData(item.url);
     item.originAuthorReputation = authorReputation;
     item.firstImageUrl = firstImageUrl
-    item.charyScore= await calculateCharyScore(item.charyNumber, item.stakedChary, authorReputation);
+    item.charyScore = await calculateCharyScore(item.charyNumber, item.stakedChary, authorReputation);
   });
 }
 
@@ -160,8 +160,8 @@ function blackList(blackListedAccount, dateFilteredRecordset) {
 
 // Hauptfunktion
 async function main() {
-  const dateRange = 14 // Number of days, that we want to observe in the dataset
-  const datasource = 'file'  // 'sql' or 'file'
+  const dateRange = 7 // Number of days, that we want to observe in the dataset
+  const datasource = 'sql'  // 'sql' or 'file'
   let recordset; // Variable initialisieren für die If-Klausel
 
   try {
@@ -205,8 +205,3 @@ async function main() {
 
 // Hauptfunktion aufrufen
 main();
-
-// ToDO: URL vom ersten Bild einfügen -> done
-// ToDo: Reputation vom Autor einfügen -> done
-// TODO: StakedChary vom Autor einfügen
-// ToDO: CharyNumber+Reputation+StakedChary sinnvoll addieren <- Danach sortieren
