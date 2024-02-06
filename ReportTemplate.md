@@ -16,7 +16,7 @@ I am proud to announce, that I can send some money to people, which helped other
 |1.|10 Hive|@[AUTHOR1]|[REASON1]|[URL1]|[IMAGE1]|
 |2.|7 Hive|@[AUTHOR2]|[REASON2]|[URL2]|[IMAGE2]|
 |3.|3 Hive|@[AUTHOR3]|[REASON3]|[URL3]|[IMAGE3]|
-
+|4.|3 Hive|@[AUTHOR4]|[REASON4]|[URL4]|[IMAGE4]|
 
 
 The money has already been sent:

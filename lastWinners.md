@@ -5,6 +5,19 @@
 
 
 Vorherige Gewinner:
+
+KW 36:
+|Place|Amount Hive|Winner|Reason|Url|Image|
+|-|-|-|-|-|-|
+|1.|12 Hive|@ilysarazom|for delivering commodities to people in need.|https://peakd.com/standwithukraine/@ilysarazom/44mziy-help-ukrainians-in-need#@anobel/re-ilysarazom-s0g3nd|![](https://i.imgur.com/0tfDZW2.jpg)|
+|2.|5 Hive|@psyshock|for engaging people to help each other and working on a recycling Projekt.|https://peakd.com/hive-148309/@psyshock/hive-integra-a-meeting-full-of-good-energy-engesp|https://images.hive.blog/0x0/https://files.peakd.com/file/peakd-hive/psyshock/EoGxUDYzbL7rEUSZH9nHeYjfQ64rAhjY8s7LLTEKMMP3n2CGx2jSLFj6JYUXYbThzRF.jpg|
+|3.|3 Hive|@chichieze|for cleaning the Planet!|https://peakd.com/hive-150210/@chichieze/clean-planet-7-7-9-2023-rain-couldn-t-stop-me-to-pick-the-dirt-s-around|![TimePhoto_20230907_134339.jpg](https://images.hive.blog/DQmeoTCiWMzdnmSt3aDVbjqsL5kDw8XDFXzfUTqCBVAs7DX/TimePhoto_20230907_134339.jpg)|
+
+KW 35:
+|Place|Amount Hive|Winner|Reason|Url|Image|
+|-|-|-|-|-|-|
+|1.|50 Hive + 2 HBD|@elkezaksek|Caring about a person that needs to pay the hospital bill|https://peakd.com/hive-150329/@elkezaksek/news-about-our-fundraiser-for-uganda-neuigkeiten-unserer-spendenaktion-fuer-uganda-196|![4.jpg](https://images.hive.blog/DQmTvF4DmaoGmBbQjwr7WyFYzpRQN78sDmBU1Rzak4wtKWu/4.jpg)|
+
 25.08.2023:
 |Place|Amount Hive|Winner|Reason|Url|Image|
 |-|-|-|-|-|-|

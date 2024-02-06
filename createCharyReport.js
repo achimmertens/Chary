@@ -43,9 +43,9 @@ async function executeScript() {
 
 // Funktion zum Extrahieren der Zahl aus der Zeichenkette
 function extractNumberFromChary(value) {
-  const match = value.match(/!CHARY:(\d+)/);
+  const match = value.match(/(!CHARY|!"CHARRY):(\d+)/);
   if (match) {
-    return parseInt(match[1]);
+    return parseInt(match[2]);
   }
   return null;
 }
@@ -80,7 +80,7 @@ async function fillTemplate(dateRange, recordset) {
 
   // Platzhalter ersetzen
   let filledTemplate = template;
-  for (let i = 0; i < Math.min(recordset.length, 3); i++) {
+  for (let i = 0; i < Math.min(recordset.length,4); i++) {
     const author = recordset[i].charyNumber ? recordset[i].account : `[AUTHOR${i + 1}]`;
     filledTemplate = filledTemplate.replace(`[AUTHOR${i + 1}]`, author);
     const weburl = recordset[i].charyNumber ? recordset[i].weburl : `[URL${i + 1}]`;
@@ -89,7 +89,8 @@ async function fillTemplate(dateRange, recordset) {
     filledTemplate = filledTemplate.replace(`[REASON${i + 1}]`, body);
 
     //const url = "/hive-150210/@alifkhan1995/todays-cleanplanet-activity--day-50---date-22082023-#@alifkhan1995/re-achimmertens-rzu2rc";
-    const url = recordset[i].charyNumber ? recordset[i].url : `[URL${i + 1}]`;
+    const url = await recordset[i].charyNumber ? recordset[i].url : `[URL${i + 1}]`;
+    console.log("Author = ", author, "url = ", url);
     const [firstImageUrl, authorReputation] = await getMetaData(url);
     filledTemplate = filledTemplate.replace(`[IMAGE${i + 1}]`, firstImageUrl);
     console.log("authorReputation = ", authorReputation);
@@ -160,7 +161,7 @@ function blackList(blackListedAccount, dateFilteredRecordset) {
 
 // Hauptfunktion
 async function main() {
-  const dateRange = 7 // Number of days, that we want to observe in the dataset
+  const dateRange = 90 // Number of days, that we want to observe in the dataset
   const datasource = 'sql'  // 'sql' or 'file'
   let recordset; // Variable initialisieren für die If-Klausel
 
@@ -178,23 +179,27 @@ async function main() {
 
     // Datensatz auf dateRange Tage begrenzen
     const dateFilteredRecordset = datefilter(dateRange, recordset);
+    fs.writeFileSync('exampleRecordSet3.json', JSON.stringify(dateFilteredRecordset));
 
     // URL, Account und CharyNumber extrahieren und anhängen:
     await dataExtractAndAppend(dateFilteredRecordset);
+    fs.writeFileSync('exampleRecordSet4.json', JSON.stringify(dateFilteredRecordset));
 
     // Filtern, dass anobel (und später weitere Peronen) nicht ausgewertet werden
     var blacklistFilteredRecordset = blackList('anobel', dateFilteredRecordset);
+  
 
     // Recordset nach charyNumber sortieren
     blacklistFilteredRecordset.sort((a, b) => b.charyScore - a.charyScore);
+    fs.writeFileSync('changedRecordSet.json', JSON.stringify(blacklistFilteredRecordset));
 
     // Vorlage mit Recordset füllen
     var filledTemplate = await fillTemplate(dateRange, blacklistFilteredRecordset);
-
+   
     console.log('Der BlacklistedRecordSet sieht so aus: ', JSON.stringify(blacklistFilteredRecordset));
     console.log('Das FilledTemplate sieht so aus: ', filledTemplate);
 
-    fs.writeFileSync('changedRecordSet.json', JSON.stringify(blacklistFilteredRecordset));
+   
     // Aktualisierte Vorlage in eine neue Datei schreiben
     fs.writeFileSync('FilledReportTemplate.md', filledTemplate);
 
